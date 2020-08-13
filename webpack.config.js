@@ -7,6 +7,8 @@ const CopyPlugin = require('copy-webpack-plugin');
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = !isProd;
 
+var webpack = require('webpack')
+
 const filename = ext => isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`;
 
 const jsLoaders = () => {
@@ -18,7 +20,12 @@ const jsLoaders = () => {
     },
   }];
   if (isDev) {
-    loaders.push('eslint-loader')
+    loaders.push({
+      loader: 'eslint-loader',
+      options: {
+        fix: true
+      }
+    })
   }
   return loaders
 };
@@ -38,12 +45,23 @@ module.exports = {
       '@core': path.resolve(__dirname, 'src/core')
     }
   },
+  externals: {
+    // require("jquery") is external and available
+    // on the global var jQuery
+    "jquery": "jQuery",
+    "jquery-ui": "jquery-ui/jquery-ui.js",
+  },
   devtool: isDev ? 'source-map' : false,
   devServer: {
     port: 3000,
     hot: isDev,
   },
   plugins: [
+    // new webpack.ProvidePlugin({
+    //   "$":"jquery",
+    //   "jQuery":"jquery",
+    //   "window.jQuery":"jquery"
+    // }),
     new CleanWebpackPlugin(),
     new HTMLWebpackPlugin({
       template: 'index.html',
@@ -57,12 +75,17 @@ module.exports = {
         {
           from: path.resolve(__dirname, 'src/favicon.ico'),
           to: path.resolve(__dirname, 'dist')
+        },
+        {
+          from: path.resolve(__dirname, 'src/img'),
+          to: path.resolve(__dirname, 'dist/img')
         }
       ],
     }),
     new MiniCssExtractPlugin({
       filename: filename('css'),
-    })
+    }),
+
   ],
   module: {
     rules: [
@@ -84,7 +107,13 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: jsLoaders(),
-      },
+      }, {
+        test: /\.(jpe?g|png|gif|svg|ico)$/i,
+        // include: path.resolve(__dirname, 'src'),
+        use: [{
+          loader: 'file-loader'
+        }],
+      }
     ],
   },
 };

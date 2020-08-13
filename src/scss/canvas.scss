@@ -1,0 +1,73 @@
+@import "variables";
+@import "mixins";
+
+.graphic__canvas {
+  position: relative;
+  height: $canvas-height;
+  left:0;
+  right:0;
+  top: $header-height + $toolbar-height;
+  border-top: 1px solid $border-color;
+  //display: flex;
+  background: #dadce0;
+
+  .scheme {
+    position: absolute;
+    width: $scheme-width;
+    //height: $scheme-height;
+    border: 1px solid $border-color;
+    background-color: #fffff2;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
+    
+    h4 {
+      text-align: center;
+      cursor: move;
+    }
+
+    .text_ru {
+      padding:5px;
+      font-size: 10px;
+      height: 150px;
+      overflow-y:scroll;
+      background-color: #FFFFFF;
+    }
+
+    .exec_func_name {
+      padding:3px 3px 3px 30px;
+      height: 28px;
+      background: url(../img/icon_function.png) no-repeat left center $formula-background-color;
+      border: 2px solid $formula-border-color;
+      -webkit-border-radius:5px;
+      -moz-border-radius:5px;
+      border-radius:5px;
+      color: #000;
+    }
+
+    .buttons {
+      max-height: $button-3height;
+      background: $border-color;
+
+      .button {
+        font-size: 10px;
+        background: #fff;
+        display: inline-block;
+        overflow: hidden;
+        border: 1px solid $primary-color;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      .cols1 { width: 16%; }
+      .cols2 { width: 33%; }
+      .cols3 { width: 50%; }
+      .cols4 { width: 66%; }
+      .cols5 { width: 83%; }
+      .cols6, .cols0 { width: 100%; }
+      .rows1, .rows0 { height: $button-height; }
+      .rows2 { width: $button-2height; }
+      .rows3 { width: $button-3height; }
+    }
+  }
+}
